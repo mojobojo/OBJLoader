@@ -21,7 +21,7 @@ main(int argc, char **argv) {
         // The obj loader requires data to be null terminated
         FileData[FileSize] = 0;
 
-#if 1
+#if 0
         size_t MemorySize = 1024 * 1024;
         void *Memory = malloc(MemorySize);
 
@@ -69,7 +69,10 @@ main(int argc, char **argv) {
             printf("            normal:  %d\n", ObjFile.f[i].f2.normal);
         }
         printf("\n");
+
+        objl_FreeObj(&ObjFile);
     }
 
+    return 0;
 }
 

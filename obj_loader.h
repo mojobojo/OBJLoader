@@ -6,8 +6,9 @@
         - Outputs a struct that exposes the data as you would see
           inside an obj file.
         - Currently uses a incomplete obj file spec
-        - Uses 3 stdlib functions
+        - Uses 4 stdlib functions
             - malloc (only if you want to use the function that uses it)
+            - free (onlt if you use the function with malloc)
             - atof
             - strtoul
 
@@ -405,8 +406,20 @@ objl_ParseObj(char *ObjData, objl_obj_file *ObjFileOut, objl_b32 UseMalloc) {
 objl_internal void
 objl_LoadObjMalloc(char *ObjData, objl_obj_file *ObjFileOut) {
     if (ObjData && ObjFileOut) {
+        objl_ZeroMemory(ObjFileOut, sizeof(objl_obj_file));
         objl_ParseObj(ObjData, ObjFileOut, true);
     }
+}
+
+objl_internal void
+objl_FreeObj(objl_obj_file *ObjFile) {
+    free(ObjFile->o);
+    free(ObjFile->v);
+    free(ObjFile->vt);
+    free(ObjFile->vn);
+    free(ObjFile->s);
+    free(ObjFile->f);
+    objl_ZeroMemory(ObjFile, sizeof(objl_obj_file));
 }
 
 // Takes a null terminated buffer with the obj data.
